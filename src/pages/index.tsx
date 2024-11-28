@@ -22,16 +22,17 @@ function Main() {
   return (
     <main className={styles.main} id="main">
       <SkipLink href="#footer" text="Skip to footer" />
-      <article className="prose dark:prose-invert md:prose-lg lg:prose-xl">
+      <div className="w-full">
         <h1>Decode Your Transaction</h1>
         <ActionArea />
-      </article>
+      </div>
     </main>
   )
 }
 
 function ActionArea() {
   const [rawTx, setRawTx] = useState<string>()
+  const [parsedTx, setPrasedTx] = useState<object>()
 
   const handleInputChange = event => {
     console.log(event.target.value)
@@ -39,10 +40,9 @@ function ActionArea() {
   }
 
   const handleSubmitTx = () => {
-    console.log(rawTx)
     submitRawTx('eth', rawTx)
       .then(res => {
-        console.log(res)
+        setPrasedTx(res)
       })
       .catch((error: Error) => {
         console.log(error.message)
@@ -69,6 +69,7 @@ function ActionArea() {
       >
         submit
       </Button>
+      {parsedTx && <Textarea className="w-full" placeholder={JSON.stringify(parsedTx)} />}
     </div>
   )
 }
