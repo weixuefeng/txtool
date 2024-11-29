@@ -1,4 +1,4 @@
-import 'styles/style.scss'
+import 'styles/style.css'
 import type { AppProps } from 'next/app'
 import { ThemeProvider } from 'next-themes'
 import { useRouter } from 'next/router'

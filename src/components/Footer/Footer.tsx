@@ -1,9 +1,8 @@
 import { ThemeToggleList, ThemeToggleButton } from 'components/Theme'
-import styles from 'styles/Home.module.scss'
 
 export function Footer() {
   return (
-    <footer className={styles.footer} id="footer">
+    <footer className={'footer'} id="footer">
       <div>
         <ThemeToggleList />
       </div>

@@ -1,9 +1,8 @@
 import { ThemeToggleList, ThemeToggleButton } from 'components/Theme'
-import styles from 'styles/Home.module.scss'
 
 export function Header() {
   return (
-    <header className={styles.header}>
+    <header className={'header'}>
       <div>
         <ThemeToggleList />
       </div>

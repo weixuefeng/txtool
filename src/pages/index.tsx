@@ -1,4 +1,3 @@
-import styles from 'styles/Home.module.scss'
 import { SkipLink } from 'components/Links'
 import { Header } from 'components/Header/Header'
 import { Footer } from 'components/Footer'
@@ -10,7 +9,7 @@ import { SupportChains } from 'constant'
 
 export default function Home() {
   return (
-    <div className={styles.container}>
+    <div className={'main'}>
       <SkipLink href="#main" text="Skip to main" />
       <Header />
       <Main />
@@ -21,9 +20,8 @@ export default function Home() {
 
 function Main() {
   return (
-    <main className={styles.main} id="main">
-      <SkipLink href="#footer" text="Skip to footer" />
-      <div className="w-full">
+    <main className={'container py-20'} id="main">
+      <div className="flex w-full flex-col items-center">
         <h1>Decode Your Transaction</h1>
         <ActionArea />
       </div>
@@ -56,11 +54,10 @@ function ActionArea() {
   }
 
   return (
-    <div className="w-full max-w-md px-4">
+    <div className="w-full px-4">
       <Field>
-        <Label className="text-sm/6 font-medium text-black">Description</Label>
-        <Description className="text-sm/6 text-black/50">This will be shown under the product title.</Description>
-
+        <Label className="text-sm/6 font-medium">Description</Label>
+        <Description className="text-sm/6">This will be shown under the product title.</Description>
         <Field>
           <Label className="block">SelectChain</Label>
           <Select onChange={handleSelectChain} className="mt-1 block" name="country">
@@ -74,7 +71,7 @@ function ActionArea() {
         <Textarea
           onInput={handleInputChange}
           className={clsx(
-            'mt-3 block w-full resize-none rounded-lg border-2 border-black bg-white/5 px-3 py-1.5 text-xl text-black ',
+            'mt-3 block min-h-40 w-full resize-none rounded-lg border-2 border-black bg-white/5 px-3 py-1.5 text-xl',
             'focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25'
           )}
           rows={3}
@@ -86,7 +83,17 @@ function ActionArea() {
       >
         submit
       </Button>
-      {parsedTx && <Textarea className="w-full" placeholder={JSON.stringify(parsedTx)} />}
+      {parsedTx && (
+        <Textarea
+          disabled={true}
+          className={clsx(
+            'prose mt-3 block min-h-80 w-full rounded-lg border-2 border-black bg-white/5 px-3 py-1.5 text-xl lg:prose-xl',
+            'focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25'
+          )}
+          unselectable="off"
+          value={JSON.stringify(parsedTx)}
+        />
+      )}
     </div>
   )
 }
