@@ -33,6 +33,7 @@ function jsonErrorResponse(errorMsg: string, res: NextApiResponse<ResponseData>)
 }
 
 function parseTransaction(chain: string, tx: string): object {
+  tx = tx.trim()
   switch (chain) {
     case ChainConfig.Bitcoin:
       return parseBitcoinTransaction(tx, BitcoinNetworkType.MainNet)

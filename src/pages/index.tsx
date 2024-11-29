@@ -10,7 +10,6 @@ import { SupportChains } from 'constant'
 export default function Home() {
   return (
     <div className={'main'}>
-      <SkipLink href="#main" text="Skip to main" />
       <Header />
       <Main />
       <Footer />
@@ -49,7 +48,7 @@ function ActionArea() {
         setPrasedTx(res)
       })
       .catch((error: Error) => {
-        console.log(error.message)
+        setPrasedTx({ error: error.message })
       })
   }
 
@@ -87,11 +86,11 @@ function ActionArea() {
         <Textarea
           disabled={true}
           className={clsx(
-            'prose mt-3 block min-h-80 w-full rounded-lg border-2 border-black bg-white/5 px-3 py-1.5 text-xl lg:prose-xl',
+            'mt-3 block h-[1100px] w-full resize-none overflow-hidden rounded-lg border-2 border-black bg-white/5 px-3 py-1.5 text-xl',
             'focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25'
           )}
           unselectable="off"
-          value={JSON.stringify(parsedTx)}
+          value={JSON.stringify(parsedTx, null, 4)}
         />
       )}
     </div>
