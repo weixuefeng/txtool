@@ -1,0 +1,26 @@
+{
+  "chainId": "5",
+  "type": "EIP-1559",
+  "valid": true,
+  "hash": "0xd20e6bc9362a5aabe9a9b7d506e7e86d0270187148985e22eb50fc3abcd39e3d",
+  "nonce": "31941",
+  "gasLimit": "90856",
+  "maxFeePerGas": "90",
+  "maxPriorityFeePerGas": "66",
+  "from": "0x0dff460D7eF7936d744E43E49929c95Ea545B5D9",
+  "to": "0x758502f01b613287731c0788f1fe4d5c4c19b79b",
+  "publicKey": "0x04de80829f2aa5d9ac99143a6c6612a4077edd1516b44029e903f7099a55c0366638eeac586cfde0956c711ecdc55de193ad838997246f0711b922c3d3fb423af5",
+  "v": "00",
+  "r": "8e6eb39efd60bb1bc18c137071b7cd2b41ea5f58316984f15e4e4d1100c7b5d1",
+  "s": "523dc6b210cdd705478293de03aabebc8e788caa13de5a3293b5651f88b80a22",
+  "value": "0",
+  "input": "0x9aaab648094e2b6c42ee984bdaf54f32cda9628d8b345f6d02d05b7ec922999ad5f1eafb000000000000000000000000000000000000000000000000000000000020d3489b3732e86fde103e1bf5efd4a317e2aa93c7deb97b8bae232c7e957064370f7c00000000000000000000000000000000000000000000000000000000009fb68b",
+  "functionHash": "0x9aaab648",
+  "functionName": "proposeL2Output",
+  "decodedInputs": {
+    "_outputRoot": "094e2b6c42ee984bdaf54f32cda9628d8b345f6d02d05b7ec922999ad5f1eafb",
+    "_l2BlockNumber": "2151240",
+    "_l1BlockHash": "9b3732e86fde103e1bf5efd4a317e2aa93c7deb97b8bae232c7e957064370f7c",
+    "_l1BlockNumber": "10466955"
+  }
+}

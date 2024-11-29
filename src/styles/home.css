@@ -1,11 +1,12 @@
-.container {
+/* .container {
   @apply flex flex-col bg-white;
   min-height: 100vh;
   padding: 0 0.5rem;
-}
+} */
 
 :global(.dark) .container {
   @apply bg-black;
+  @apply flex flex-col;
 }
 
 .header {
@@ -17,9 +18,7 @@
 
 .main {
   @apply flex flex-col;
-  padding: 5rem 0;
   flex: 1;
-  justify-content: center;
   align-items: center;
 }
 

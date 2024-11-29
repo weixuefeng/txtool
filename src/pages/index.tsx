@@ -1,11 +1,15 @@
-import styles from 'styles/Home.module.scss'
-import { ThemeToggleButton, ThemeToggleList } from 'components/Theme'
 import { SkipLink } from 'components/Links'
+import { Header } from 'components/Header/Header'
+import { Footer } from 'components/Footer'
+import { Button, Description, Field, Label, Textarea, Select } from '@headlessui/react'
+import clsx from 'clsx'
+import { submitRawTx } from 'network'
+import { useState } from 'react'
+import { SupportChains } from 'constant'
 
 export default function Home() {
   return (
-    <div className={styles.container}>
-      <SkipLink href="#main" text="Skip to main" />
+    <div className={'main'}>
       <Header />
       <Main />
       <Footer />
@@ -13,53 +17,82 @@ export default function Home() {
   )
 }
 
-function Header() {
-  return (
-    <header className={styles.header}>
-      <div>
-        <ThemeToggleList />
-      </div>
-      <div className="flex items-center">
-        <ThemeToggleButton /> header <ThemeToggleList />
-      </div>
-
-      <div className="flex items-center">
-        <ThemeToggleButton />
-        <ThemeToggleList />
-      </div>
-    </header>
-  )
-}
-
 function Main() {
   return (
-    <main className={styles.main} id="main">
-      <SkipLink href="#footer" text="Skip to footer" />
-      <article className="prose dark:prose-invert md:prose-lg lg:prose-xl">
-        <h1>Heading 1</h1>
-        <h2>Heading 2</h2>
-        <h3>Heading 3</h3>
-        <h4>Heading 4</h4>
-        <p>Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</p>
-      </article>
+    <main className={'container py-20'} id="main">
+      <div className="flex w-full flex-col items-center">
+        <h1>Decode Your Transaction</h1>
+        <ActionArea />
+      </div>
     </main>
   )
 }
 
-function Footer() {
-  return (
-    <footer className={styles.footer} id="footer">
-      <div>
-        <ThemeToggleList />
-      </div>
-      <div className="flex items-center">
-        <ThemeToggleButton /> footer <ThemeToggleList />
-      </div>
+function ActionArea() {
+  const [rawTx, setRawTx] = useState<string>()
+  const [parsedTx, setPrasedTx] = useState<object>()
+  const [currentChain, setCurrentChain] = useState<string>(SupportChains[0])
 
-      <div className="flex items-center">
-        <ThemeToggleButton />
-        <ThemeToggleList />
-      </div>
-    </footer>
+  const handleInputChange = event => {
+    console.log(event.target.value)
+    setRawTx(event.target.value)
+  }
+
+  const handleSelectChain = event => {
+    setCurrentChain(event.target.value)
+  }
+
+  const handleSubmitTx = () => {
+    submitRawTx(currentChain, rawTx)
+      .then(res => {
+        setPrasedTx(res)
+      })
+      .catch((error: Error) => {
+        setPrasedTx({ error: error.message })
+      })
+  }
+
+  return (
+    <div className="w-full px-4">
+      <Field>
+        <Label className="text-sm/6 font-medium">Description</Label>
+        <Description className="text-sm/6">This will be shown under the product title.</Description>
+        <Field>
+          <Label className="block">SelectChain</Label>
+          <Select onChange={handleSelectChain} className="mt-1 block" name="country">
+            {SupportChains &&
+              SupportChains.map(item => {
+                return <option key={item}>{item}</option>
+              })}
+          </Select>
+        </Field>
+
+        <Textarea
+          onInput={handleInputChange}
+          className={clsx(
+            'mt-3 block min-h-40 w-full resize-none rounded-lg border-2 border-black bg-white/5 px-3 py-1.5 text-xl',
+            'focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25'
+          )}
+          rows={3}
+        />
+      </Field>
+      <Button
+        onClick={handleSubmitTx}
+        className="ounded mt-5 bg-sky-600 px-4 py-2 text-sm text-white data-[active]:bg-sky-700 data-[hover]:bg-sky-500"
+      >
+        submit
+      </Button>
+      {parsedTx && (
+        <Textarea
+          disabled={true}
+          className={clsx(
+            'mt-3 block h-[1100px] w-full resize-none overflow-hidden rounded-lg border-2 border-black bg-white/5 px-3 py-1.5 text-xl',
+            'focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25'
+          )}
+          unselectable="off"
+          value={JSON.stringify(parsedTx, null, 4)}
+        />
+      )}
+    </div>
   )
 }
