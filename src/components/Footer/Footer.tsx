@@ -1,4 +1,5 @@
 import { ThemeToggleList, ThemeToggleButton } from 'components/Theme'
+import Link from 'next/link'
 
 export function Footer() {
   return (
@@ -7,7 +8,7 @@ export function Footer() {
         <p></p>
       </div>
       <div className="flex items-center">
-        <p>weixuefeng1018@gmail.com</p>
+        <Link href={'https://github.com/weixuefeng/'}>https://github.com/weixuefeng/</Link>
       </div>
 
       <div className="flex items-center"></div>
