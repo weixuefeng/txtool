@@ -6,6 +6,7 @@ import clsx from 'clsx'
 import { submitRawTx } from 'network'
 import { useState } from 'react'
 import { SupportChains } from 'constant'
+import { LoadingView } from 'components/Loading/LoadingView'
 
 export default function Home() {
   return (
@@ -29,6 +30,7 @@ function Main() {
 }
 
 function ActionArea() {
+  const [isOpenLoading, setIsOpenLoading] = useState<boolean>(false)
   const [rawTx, setRawTx] = useState<string>()
   const [parsedTx, setPrasedTx] = useState<object>()
   const [currentChain, setCurrentChain] = useState<string>(SupportChains[0])
@@ -43,12 +45,16 @@ function ActionArea() {
   }
 
   const handleSubmitTx = () => {
+    setIsOpenLoading(true)
     submitRawTx(currentChain, rawTx)
       .then(res => {
         setPrasedTx(res)
       })
       .catch((error: Error) => {
         setPrasedTx({ error: error.message })
+      })
+      .finally(() => {
+        setIsOpenLoading(false)
       })
   }
 
@@ -93,6 +99,7 @@ function ActionArea() {
           value={JSON.stringify(parsedTx, null, 4)}
         />
       )}
+      <LoadingView isOpen={isOpenLoading} close={() => setIsOpenLoading(false)} />
     </div>
   )
 }
