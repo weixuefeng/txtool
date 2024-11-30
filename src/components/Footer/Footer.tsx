@@ -4,16 +4,13 @@ export function Footer() {
   return (
     <footer className={'footer'} id="footer">
       <div>
-        <ThemeToggleList />
+        <p></p>
       </div>
       <div className="flex items-center">
-        <ThemeToggleButton /> footer <ThemeToggleList />
+        <p>weixuefeng1018@gmail.com</p>
       </div>
 
-      <div className="flex items-center">
-        <ThemeToggleButton />
-        <ThemeToggleList />
-      </div>
+      <div className="flex items-center"></div>
     </footer>
   )
 }
