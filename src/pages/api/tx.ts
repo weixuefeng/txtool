@@ -3,7 +3,7 @@ import { BitcoinNetworkType, ChainConfig, ErrorCode } from 'constant'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { hexlify, Transaction } from 'ethers'
 import * as bitcoin from 'bitcoinjs-lib'
-import * as ecc from 'tiny-secp256k1'
+import ecc from '@bitcoinerlab/secp256k1'
 bitcoin.initEccLib(ecc)
 
 type ResponseData = {
