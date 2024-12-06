@@ -5,8 +5,9 @@ import { Button, Description, Field, Label, Textarea, Select } from '@headlessui
 import clsx from 'clsx'
 import { submitRawTx } from 'network'
 import { useState } from 'react'
-import { SupportChains } from 'constant'
+import { Router, SupportChains } from 'constant'
 import { LoadingView } from 'components/Loading/LoadingView'
+import Link from 'next/link'
 
 export default function Home() {
   return (
@@ -22,7 +23,8 @@ function Main() {
   return (
     <main className={'container py-20'} id="main">
       <div className="flex h-[600px] w-full flex-col items-center">
-        <h1>Hello World</h1>
+        <Link href={Router.Decode}>Decode Tool</Link>
+        <Link href={Router.Evm}>Evm Tool</Link>
       </div>
     </main>
   )

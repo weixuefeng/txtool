@@ -8,7 +8,7 @@ export function Footer() {
         <p></p>
       </div>
       <div className="flex items-center">
-        <Link href={'https://github.com/weixuefeng/'}>https://github.com/weixuefeng/</Link>
+        <Link href={'https://github.com/weixuefeng/tx-tool.github.io'}>GitHub</Link>
       </div>
 
       <div className="flex items-center"></div>

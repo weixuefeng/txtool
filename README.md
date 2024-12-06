@@ -1,10 +1,6 @@
-# Next.JS Starter Boilerplate
+# Tx Decode Tool
 
-A Next.js starter kit template with Next.js 12 + React 18 + Typescript + Tailwind CSS 3 + Heroicons + Headless UI.
-
-Other tools included: Autoprefixer, Sass, PostCSS, ESLint, Prettier.
-
-Live preview for this repo: https://nextjs-starter.aris.ac
+Live preview for this repo: https://txtool.fun
 
 ## Getting Started
 

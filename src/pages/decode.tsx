@@ -27,18 +27,6 @@ function Main() {
   )
 }
 
-function Description() {
-  return (
-    <div className="flex flex-col">
-      <h1>This page offers a transaction analysis feature. To use it, please follow these steps:</h1>
-      <h2>1. Select the Blockchain: Choose the appropriate blockchain from the dropdown menu.</h2>
-      <h2>2. Input the Raw Transaction: Enter the raw transaction data in the provided text box. </h2>
-      <h2>3. Click the Submit Button: After entering the information, click the submit button.</h2>
-      <h1>Once submitted, you will receive the original transaction data for further analysis.</h1>
-    </div>
-  )
-}
-
 function ActionArea() {
   const [isOpenLoading, setIsOpenLoading] = useState<boolean>(false)
   const [rawTx, setRawTx] = useState<string>()
@@ -100,10 +88,7 @@ function ActionArea() {
         <div className="flex-row">
           <h1>3. Decode Tx</h1>
         </div>
-        <Button
-          onClick={handleSubmitTx}
-          className="ounded mt-5 bg-sky-600 px-4 py-2 text-sm text-white data-[active]:bg-sky-700 data-[hover]:bg-sky-500"
-        >
+        <Button onClick={handleSubmitTx} className="submit">
           Decode
         </Button>
       </div>

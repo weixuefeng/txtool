@@ -22,3 +22,9 @@ export const SupportChains = [
   ChainConfig.BitcoinTestNet,
   ChainConfig.BitcoinRegTest,
 ]
+
+export const Router = {
+  Home: '/',
+  Decode: '/decode',
+  Evm: '/evm',
+}
