@@ -60,6 +60,10 @@ function EvmActionArea() {
         title="1. eth_chainId"
         items={undefined}
         execute={callback => {
+          if (rpc == undefined) {
+            callback('Please Input Rpc Endpoint')
+            return
+          }
           setIsOpenLoading(true)
           rpc
             .getNetwork()
@@ -79,6 +83,10 @@ function EvmActionArea() {
         title="2. getBalance"
         items={[new InputItem('FromAddress', 'Input From Address')]}
         execute={(callback, address) => {
+          if (rpc == undefined) {
+            callback('Please Input Rpc Endpoint')
+            return
+          }
           setIsOpenLoading(true)
           rpc
             .getBalance(address)
@@ -101,6 +109,10 @@ function EvmActionArea() {
           new InputItem('TokenAddress', 'Input Token Address'),
         ]}
         execute={(callback, address, tokenAddress) => {
+          if (rpc == undefined) {
+            callback('Please Input Rpc Endpoint')
+            return
+          }
           setIsOpenLoading(true)
           var prefix = ethers.keccak256(ethers.toUtf8Bytes('balanceOf(address)')).substring(0, 10)
           var info = ethers.AbiCoder.defaultAbiCoder().encode(['address'], [address])
@@ -130,6 +142,10 @@ function EvmActionArea() {
           new InputItem('TokenAddress', 'Input Token Address'),
         ]}
         execute={(callback, address, id, tokenAddress) => {
+          if (rpc == undefined) {
+            callback('Please Input Rpc Endpoint')
+            return
+          }
           setIsOpenLoading(true)
           var prefix = ethers.keccak256(ethers.toUtf8Bytes('balanceOf(address,uint256)')).substring(0, 10)
           console.log(prefix)
@@ -142,6 +158,29 @@ function EvmActionArea() {
             })
             .then(res => {
               callback(parseInt(res).toString())
+            })
+            .catch(error => {
+              callback(error.toString())
+            })
+            .finally(() => {
+              setIsOpenLoading(false)
+            })
+        }}
+      />
+
+      <ActionItem
+        title="5. eth_gasPrice"
+        items={undefined}
+        execute={callback => {
+          if (rpc == undefined) {
+            callback('Please Input Rpc Endpoint')
+            return
+          }
+          setIsOpenLoading(true)
+          rpc
+            .getFeeData()
+            .then(res => {
+              callback(JSON.stringify(res))
             })
             .catch(error => {
               callback(error.toString())
@@ -203,7 +242,7 @@ function ActionItem(props: { title: string; items: InputItem[] | undefined; exec
       {items &&
         items.map((item, index) => {
           return (
-            <Field as='div' key={item.name}>
+            <Field as="div" key={item.name}>
               <Label className="text-sm/6 font-medium ">{item.name}</Label>
               <Description className="text-sm/6 ">{item.description}</Description>
               <Input
