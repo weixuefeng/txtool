@@ -203,7 +203,7 @@ function ActionItem(props: { title: string; items: InputItem[] | undefined; exec
       {items &&
         items.map((item, index) => {
           return (
-            <Field>
+            <Field as='div' key={item.name}>
               <Label className="text-sm/6 font-medium ">{item.name}</Label>
               <Description className="text-sm/6 ">{item.description}</Description>
               <Input
