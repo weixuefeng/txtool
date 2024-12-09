@@ -1,8 +1,8 @@
-import Script from "next/script";
+import Script from 'next/script'
 
 type Props = {
-  pId: string;
-};
+  pId: string
+}
 
 const GoogleAdsense: React.FC<Props> = ({ pId }) => {
   return (
@@ -12,7 +12,7 @@ const GoogleAdsense: React.FC<Props> = ({ pId }) => {
       crossOrigin="anonymous"
       strategy="afterInteractive"
     />
-  );
-};
+  )
+}
 
-export default GoogleAdsense;
+export default GoogleAdsense

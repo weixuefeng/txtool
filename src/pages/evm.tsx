@@ -191,6 +191,29 @@ function EvmActionArea() {
         }}
       />
 
+      <ActionItem
+        title="5. broadcast Transaction"
+        items={[new InputItem('RawTransaction', 'Input RawTransaction')]}
+        execute={(callback, rawTransaction) => {
+          if (rpc == undefined) {
+            callback('Please Input Rpc Endpoint')
+            return
+          }
+          setIsOpenLoading(true)
+          rpc
+            .broadcastTransaction(rawTransaction)
+            .then(res => {
+              callback(JSON.stringify(res))
+            })
+            .catch(error => {
+              callback(error.toString())
+            })
+            .finally(() => {
+              setIsOpenLoading(false)
+            })
+        }}
+      />
+
       <LoadingView isOpen={isOpenLoading} close={() => setIsOpenLoading(false)} />
     </div>
   )
