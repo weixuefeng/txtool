@@ -1,10 +1,8 @@
 import { Header } from 'components/Header/Header'
 import { Footer } from 'components/Footer'
-import { Button, Textarea, Select, Input, Field, Label, Description } from '@headlessui/react'
+import { Button, Input, Field, Label, Description } from '@headlessui/react'
 import clsx from 'clsx'
-import { submitRawTx } from 'network'
 import { useState } from 'react'
-import { SupportChains } from 'constant'
 import { LoadingView } from 'components/Loading/LoadingView'
 import { ethers } from 'ethers'
 
