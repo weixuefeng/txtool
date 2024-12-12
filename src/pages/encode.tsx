@@ -6,6 +6,7 @@ import { useState } from 'react'
 import { EncodeType, SupportEncodeTypes } from 'constant'
 import { LoadingView } from 'components/Loading/LoadingView'
 import { decodeBase58, decodeBase64, encodeBase58, encodeBase64, getBytes, hexlify } from 'ethers'
+import i18next from 'i18next'
 
 export default function EncodePage() {
   return (
@@ -93,7 +94,7 @@ function ActionArea() {
     <div className="w-full px-4">
       <div className="flex flex-col">
         <div className="flex-row">
-          <h1>1. Select Encode Type</h1>
+          <h1>1. {i18next.t('SelectEncodeType')}</h1>
         </div>
         <Select onChange={handleSelectChain} className="mt-4 block w-40" name="chain">
           {SupportEncodeTypes &&
@@ -105,7 +106,7 @@ function ActionArea() {
 
       <div className="flex flex-col pt-8">
         <div className="flex-row">
-          <h1>2. Input Raw Info</h1>
+          <h1>2. {i18next.t('InputRawInfo')}</h1>
         </div>
         <Textarea
           onInput={handleInputChange}
@@ -122,14 +123,14 @@ function ActionArea() {
           <h1>3. {currentChain}</h1>
         </div>
         <Button onClick={handleSubmitTx} className="submit">
-          Submit
+          {i18next.t('Execute')}
         </Button>
       </div>
 
       {parsedTx && (
         <div className="flex flex-col pt-8">
           <div className="flex-row">
-            <h1>4. DecodedTx</h1>
+            <h1>4. {i18next.t('Result')}</h1>
           </div>
           <Textarea
             disabled={true}

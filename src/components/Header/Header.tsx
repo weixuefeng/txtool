@@ -1,31 +1,18 @@
-import { ThemeToggleList, ThemeToggleButton } from 'components/Theme'
+import { ThemeToggleList } from 'components/Theme'
+import { Routers } from 'constant'
 import Link from 'next/link'
 
 export function Header() {
-  const items = [
-    {
-      name: 'Home',
-      url: '/',
-    },
-    {
-      name: 'DecodeTx',
-      url: '/decode',
-    },
-    {
-      name: 'Other',
-      url: '/',
-    },
-  ]
   return (
     <header className={'header'}>
       <div>
         <p>LOGO</p>
       </div>
       <div className="nav">
-        {items &&
-          items.map(item => {
+        {Routers &&
+          Routers.map(item => {
             return (
-              <Link href={item.url} key={item.name}>
+              <Link href={item.path} key={item.name}>
                 {item.name.toUpperCase()}
               </Link>
             )

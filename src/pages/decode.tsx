@@ -6,6 +6,8 @@ import { submitRawTx } from 'network'
 import { useState } from 'react'
 import { SupportChains } from 'constant'
 import { LoadingView } from 'components/Loading/LoadingView'
+import 'i18next'
+import i18next from 'i18next'
 
 export default function Decode() {
   return (
@@ -60,7 +62,7 @@ function ActionArea() {
     <div className="w-full px-4">
       <div className="flex flex-col">
         <div className="flex-row">
-          <h1>1. Select Chain</h1>
+          <h1>1. {i18next.t('SelectChain')}</h1>
         </div>
         <Select onChange={handleSelectChain} className="mt-4 block w-40" name="chain">
           {SupportChains &&
@@ -72,7 +74,7 @@ function ActionArea() {
 
       <div className="flex flex-col pt-8">
         <div className="flex-row">
-          <h1>2. Input Raw Transaction</h1>
+          <h1>2. {i18next.t('InputRawTranaction')}</h1>
         </div>
         <Textarea
           onInput={handleInputChange}
@@ -86,17 +88,17 @@ function ActionArea() {
 
       <div className="flex flex-col pt-8">
         <div className="flex-row">
-          <h1>3. Decode Tx</h1>
+          <h1>3. {i18next.t('DecodeTx')}</h1>
         </div>
         <Button onClick={handleSubmitTx} className="submit">
-          Decode
+          {i18next.t('Decode')}
         </Button>
       </div>
 
       {parsedTx && (
         <div className="flex flex-col pt-8">
           <div className="flex-row">
-            <h1>4. DecodedTx</h1>
+            <h1>4. {i18next.t('Result')}</h1>
           </div>
           <Textarea
             disabled={true}

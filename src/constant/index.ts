@@ -1,3 +1,5 @@
+import i18next from 'i18next'
+
 export const ErrorCode = {
   Success: 1,
   Error: 0,
@@ -62,8 +64,8 @@ class RouterInfo {
 }
 
 export const Routers = [
-  new RouterInfo('Home', Router.Home),
-  new RouterInfo('Decode Transaction', Router.Decode),
-  new RouterInfo('Evm Tools', Router.Evm),
-  new RouterInfo('Encode Tools', Router.Encode),
+  new RouterInfo(i18next.t('Home'), Router.Home),
+  new RouterInfo(i18next.t('DecodeTx'), Router.Decode),
+  new RouterInfo(i18next.t('EvmTools'), Router.Evm),
+  new RouterInfo(i18next.t('EncodeTools'), Router.Encode),
 ]

@@ -5,6 +5,7 @@ import clsx from 'clsx'
 import { useState } from 'react'
 import { LoadingView } from 'components/Loading/LoadingView'
 import { ethers } from 'ethers'
+import i18next from 'i18next'
 
 class InputItem {
   name: string
@@ -79,7 +80,7 @@ function EvmActionArea() {
 
       <ActionItem
         title="2. getBalance"
-        items={[new InputItem('FromAddress', 'Input From Address')]}
+        items={[new InputItem(i18next.t('FromAddress'), i18next.t('InputFromAddress'))]}
         execute={(callback, address) => {
           if (rpc == undefined) {
             callback('Please Input Rpc Endpoint')
@@ -103,8 +104,8 @@ function EvmActionArea() {
       <ActionItem
         title="3. getTokenBalance"
         items={[
-          new InputItem('FromAddress', 'Input From Address'),
-          new InputItem('TokenAddress', 'Input Token Address'),
+          new InputItem(i18next.t('FromAddress'), i18next.t('InputFromAddress')),
+          new InputItem(i18next.t('TokenAddress'), i18next.t('InputTokenAddress')),
         ]}
         execute={(callback, address, tokenAddress) => {
           if (rpc == undefined) {
@@ -133,11 +134,11 @@ function EvmActionArea() {
         }}
       />
       <ActionItem
-        title="4. getEip1155TokenBalance"
+        title={4 + '. ' + i18next.t('GetEip11555TokenBalance')}
         items={[
-          new InputItem('FromAddress', 'Input From Address'),
+          new InputItem(i18next.t('FromAddress'), i18next.t('InputFromAddress')),
           new InputItem('TokenId', 'Input Token Id'),
-          new InputItem('TokenAddress', 'Input Token Address'),
+          new InputItem(i18next.t('TokenAddress'), i18next.t('InputTokenAddress')),
         ]}
         execute={(callback, address, id, tokenAddress) => {
           if (rpc == undefined) {
@@ -190,8 +191,8 @@ function EvmActionArea() {
       />
 
       <ActionItem
-        title="5. broadcast Transaction"
-        items={[new InputItem('RawTransaction', 'Input RawTransaction')]}
+        title={6 + '. ' + i18next.t('BroadCastTranaction')}
+        items={[new InputItem(i18next.t('RawTransaction'), i18next.t('InputRawTranaction'))]}
         execute={(callback, rawTransaction) => {
           if (rpc == undefined) {
             callback('Please Input Rpc Endpoint')
@@ -277,7 +278,7 @@ function ActionItem(props: { title: string; items: InputItem[] | undefined; exec
           )
         })}
       <Button onClick={handleSubmit} className={'submit'}>
-        Execute
+        {i18next.t('Execute')}
       </Button>
     </div>
   )

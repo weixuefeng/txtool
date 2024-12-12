@@ -1,0 +1,25 @@
+import { Input } from 'postcss'
+
+export const enTransaction = {
+  Home: 'Home',
+  DecodeTx: 'Decode Transaction',
+  EvmTools: 'Evm Tools',
+  EncodeTools: 'Encode Tools',
+  SelectChain: 'Select Chain',
+  InputRawTranaction: 'Input Raw Transaction',
+  Submit: 'Submit',
+  Decode: 'Decode',
+  Execute: 'Execute',
+  FromAddress: 'From Address',
+  InputFromAddress: 'Input From Address',
+  TokenAddress: 'Token Address',
+  InputTokenAddress: 'Input Token Address',
+  GetEip11555TokenBalance: 'Get EIP-1155 Token Balance',
+  TokenId: 'Token Id',
+  InputTokenId: 'Input Token Id',
+  BroadCastTranaction: 'Broadcast Transaction',
+  RawTransaction: 'Raw Transaction',
+  EncodeTool: 'Encode Tool',
+  SelectEncodeType: 'Select Encode Type',
+  InputRawInfo: 'Input Raw Info',
+}
