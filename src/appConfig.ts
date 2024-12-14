@@ -3,7 +3,7 @@ export const app: { [key: string]: string } = {
   title: 'Decode ETH,BTC Transaction', // website title
   description: 'Decode Transaction for bitcoin, ethereum', // description of website
   keywords: 'bitcoin, eth, transaction, decode, abi', // keywords for SEO
-  url: 'https://nextjs-starter.aris.ac', // website url
+  url: 'https://txtool.fun', // website url
   image: '/icon-512x512.png', // image url for SEO
   favicon: '/favicon.ico', // favicon url
   twitter: '@arisdotac', // twitter account
