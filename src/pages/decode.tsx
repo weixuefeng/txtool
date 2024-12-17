@@ -103,7 +103,7 @@ function ActionArea() {
           <Textarea
             disabled={true}
             className={clsx(
-              'mt-3 block h-[1000px] w-full resize-none overflow-hidden rounded-lg border-2 border-gray-600  px-3 py-1.5 text-xl',
+              'mt-3 block h-[1000px] w-full resize-none rounded-lg border-2 border-gray-600  px-3 py-1.5 text-xl',
               'focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25'
             )}
             unselectable="off"

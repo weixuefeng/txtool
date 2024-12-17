@@ -17,6 +17,7 @@
     "@heroicons/react": "^2.0.12",
     "@next/third-parties": "^15.0.4",
     "@popperjs/core": "^2.11.6",
+    "@solana/web3.js": "^1.98.0",
     "@tailwindcss/typography": "^0.5.7",
     "autoprefixer": "^10.4.12",
     "axios": "^1.7.8",

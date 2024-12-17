@@ -1,6 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import { BitcoinNetworkType, ChainConfig, ErrorCode } from 'constant'
 import type { NextApiRequest, NextApiResponse } from 'next'
+import sol from '@solana/web3.js'
 import { hexlify, Transaction } from 'ethers'
 import * as bitcoin from 'bitcoinjs-lib'
 import ecc from '@bitcoinerlab/secp256k1'
@@ -43,8 +44,20 @@ function parseTransaction(chain: string, tx: string): object {
       return parseBitcoinTransaction(tx, BitcoinNetworkType.TestNet)
     case ChainConfig.ETH:
       return parseEvmTx(tx)
+    case ChainConfig.Solana:
+      return parseSolanaTx(tx)
     default:
       throw Error(`unknow chain type: ${chain}`)
+  }
+}
+
+function parseSolanaTx(txString: string) {
+  try {
+    let solTx = sol.Transaction.from(Buffer.from(txString, 'hex'))
+    return solTx
+  } catch (e) {
+    let solTx = sol.VersionedTransaction.deserialize(Buffer.from(txString, 'hex'))
+    return solTx
   }
 }
 

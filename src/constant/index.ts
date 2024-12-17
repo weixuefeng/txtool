@@ -16,6 +16,7 @@ export const ChainConfig = {
   Bitcoin: 'Bitcoin',
   BitcoinTestNet: 'BitcoinTest',
   BitcoinRegTest: 'BitcoinRegTest',
+  Solana: 'Solana',
 }
 
 export const SupportChains = [
@@ -23,6 +24,7 @@ export const SupportChains = [
   ChainConfig.Bitcoin,
   ChainConfig.BitcoinTestNet,
   ChainConfig.BitcoinRegTest,
+  ChainConfig.Solana,
 ]
 
 export const EncodeType = {
