@@ -21,4 +21,5 @@ export const zhTransaction = {
   SelectEncodeType: '选择编解码类型',
   InputRawInfo: '输入原始信息',
   Result: '结果',
+  UsefulSite: '有用的网站',
 }

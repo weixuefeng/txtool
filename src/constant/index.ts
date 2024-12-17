@@ -60,6 +60,7 @@ export const Router = {
   Decode: '/decode',
   Evm: '/evm',
   Encode: '/encode',
+  UsefulSite: '/usefulsite',
 }
 
 class RouterInfo {
@@ -76,4 +77,5 @@ export const Routers = [
   new RouterInfo(i18next.t('DecodeTx'), Router.Decode),
   new RouterInfo(i18next.t('EvmTools'), Router.Evm),
   new RouterInfo(i18next.t('EncodeTools'), Router.Encode),
+  new RouterInfo(i18next.t('UsefulSite'), Router.UsefulSite),
 ]

@@ -45,7 +45,7 @@ function parseTransaction(chain: string, tx: string): object {
     case ChainConfig.ETH:
       return parseEvmTx(tx)
     case ChainConfig.Solana:
-      return parseSolanaTx(tx);
+      return parseSolanaTx(tx)
     default:
       throw Error(`unknow chain type: ${chain}`)
   }
@@ -53,11 +53,11 @@ function parseTransaction(chain: string, tx: string): object {
 
 function parseSolanaTx(txString: string) {
   try {
-    let solTx = sol.Transaction.from(Buffer.from(txString, 'hex'));
+    let solTx = sol.Transaction.from(Buffer.from(txString, 'hex'))
     return solTx
-  } catch(e) {
-    let solTx =  sol.VersionedTransaction.deserialize(Buffer.from(txString, 'hex'));
-    return solTx;
+  } catch (e) {
+    let solTx = sol.VersionedTransaction.deserialize(Buffer.from(txString, 'hex'))
+    return solTx
   }
 }
 
