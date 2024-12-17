@@ -81,6 +81,37 @@ function ActionArea() {
           var data = coder.encode(rawTx)
           setPrasedTx(hexlify(data))
           break
+        case EncodeType.IntArrayToHex:
+          var arr = rawTx
+            .split(' ')
+            .filter(item => {
+              let info = item.trim()
+              return info.length > 0
+            })
+            .map(item => {
+              let info = item.trim()
+              return parseInt(info, 10)
+            })
+          var res = Buffer.from(arr).toString('hex')
+          setPrasedTx(res)
+          break
+        case EncodeType.HexIntArrayToHex:
+          var arr = rawTx
+            .split(' ')
+            .filter(item => {
+              let info = item.trim()
+              return info.length > 0
+            })
+            .map(item => {
+              let info = item.trim()
+              return parseInt(info, 16)
+            })
+          var res = Buffer.from(arr).toString('hex')
+          setPrasedTx(res)
+          break
+        case EncodeType.HexToIntArray:
+          setPrasedTx(JSON.stringify(Buffer.from(rawTx, 'hex').buffer))
+          break
         default:
           setPrasedTx('current not support : ' + currentChain)
           break

@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios'
 import { ErrorCode } from 'constant'
 
 type ResponseData = {
@@ -18,7 +18,7 @@ async function post(url: string, body: object | undefined) {
   return parseResponse(res)
 }
 
-function parseResponse(response: axios.AxiosResponse<any, any>) {
+function parseResponse(response: AxiosResponse<any, any>) {
   if (response.status === 200) {
     var res = response.data as ResponseData
     if (res.errorCode == ErrorCode.Success) {

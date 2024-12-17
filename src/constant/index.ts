@@ -34,6 +34,9 @@ export const EncodeType = {
   Base58ToBase64: 'Base58ToBase64',
   HexToString: 'HexToString',
   StringToHex: 'StringToHex',
+  IntArrayToHex: 'IntArrayToHex',
+  HexIntArrayToHex: 'HexIntArrayToHex',
+  HexToIntArray: 'HexToIntArray',
 }
 
 export const SupportEncodeTypes = [
@@ -45,6 +48,9 @@ export const SupportEncodeTypes = [
   EncodeType.Base58ToBase64,
   EncodeType.HexToString,
   EncodeType.StringToHex,
+  EncodeType.IntArrayToHex,
+  EncodeType.HexToIntArray,
+  EncodeType.HexIntArrayToHex,
 ]
 
 export const Router = {
