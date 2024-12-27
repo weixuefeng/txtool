@@ -2,7 +2,7 @@
 import { BitcoinNetworkType, ChainConfig, ErrorCode } from 'constant'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import sol from '@solana/web3.js'
-import { hexlify, Transaction } from 'ethers'
+import { decodeBase58, hexlify, isHexString, Transaction } from 'ethers'
 import * as bitcoin from 'bitcoinjs-lib'
 import ecc from '@bitcoinerlab/secp256k1'
 bitcoin.initEccLib(ecc)
@@ -52,6 +52,14 @@ function parseTransaction(chain: string, tx: string): object {
 }
 
 function parseSolanaTx(txString: string) {
+  let isHex = isHexString(txString);
+  if(!isHex) {
+    var decoded = decodeBase58(txString).toString(16);
+    if(decoded.length % 2 !== 0) {
+      decoded = '0' + decoded
+    }
+    txString = decoded;
+  }
   try {
     let solTx = sol.Transaction.from(Buffer.from(txString, 'hex'))
     return solTx
