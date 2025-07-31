@@ -4,10 +4,11 @@ import { useTheme } from 'next-themes'
 
 export default function HeadGlobal() {
   const { resolvedTheme } = useTheme()
-  return Head(
-    <>
+  return (
+    <Head>
       <meta charSet="utf-8" />
       <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
+
       <meta
         name="viewport"
         content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover"
@@ -35,6 +36,6 @@ export default function HeadGlobal() {
       <meta name="description" content={app.description} />
       <meta name="keywords" content={app.keywords} />
       <title>{app.title}</title>
-    </>
+    </Head>
   )
 }
