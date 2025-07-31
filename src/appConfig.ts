@@ -1,8 +1,8 @@
 export const app: { [key: string]: string } = {
-  name: 'Decode Transaction', // web app name
-  title: 'Decode ETH,BTC Transaction', // website title
+  name: 'TxTool', // web app name
+  title: 'Transaction decode tools', // website title
   description: 'Decode Transaction for bitcoin, ethereum', // description of website
-  keywords: 'bitcoin, eth, transaction, decode, abi', // keywords for SEO
+  keywords: 'txtool, txtool.fun, bitcoin, eth,solana, transaction, decode, abi, decode', // keywords for SEO
   url: 'https://txtool.fun', // website url
   image: '/icon-512x512.png', // image url for SEO
   favicon: '/favicon.ico', // favicon url
