@@ -1,6 +1,7 @@
-module.exports = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   reactStrictMode: true,
-  sassOptions: {
-    implementation: 'sass-embedded',
-  },
-}
+  swcMinify: true,
+};
+
+module.exports = nextConfig;

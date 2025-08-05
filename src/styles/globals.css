@@ -1,0 +1,159 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-primary: 98 0 238;
+    --color-primary-dark: 55 0 179;
+    --color-secondary: 3 218 198;
+    --color-secondary-dark: 1 135 134;
+    --color-background: 245 245 245;
+    --color-surface: 255 255 255;
+    --color-error: 176 0 32;
+  }
+
+  .dark {
+    --color-primary: 187 134 252;
+    --color-primary-dark: 55 0 179;
+    --color-secondary: 3 218 198;
+    --color-secondary-dark: 3 218 198;
+    --color-background: 18 18 18;
+    --color-surface: 30 30 30;
+    --color-error: 207 102 121;
+  }
+
+  html {
+    font-family: 'Roboto', system-ui, sans-serif;
+  }
+
+  body {
+    @apply bg-background-light dark:bg-background-dark text-black dark:text-white;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center px-4 py-2 rounded text-sm font-medium uppercase tracking-wider transition-colors;
+  }
+
+  .btn-primary {
+    @apply bg-primary text-white hover:bg-primary-dark;
+  }
+
+  .btn-secondary {
+    @apply bg-secondary text-black hover:bg-secondary-dark;
+  }
+
+  .btn-text {
+    @apply bg-transparent text-primary hover:bg-gray-100 dark:hover:bg-gray-800;
+  }
+
+  .card {
+    @apply bg-surface-light dark:bg-surface-dark rounded-lg shadow-md-light overflow-hidden transition-shadow hover:shadow-lg-light;
+  }
+
+  .card-header {
+    @apply p-4 flex justify-between items-center border-b border-gray-200 dark:border-gray-700;
+  }
+
+  .card-content {
+    @apply p-4;
+  }
+
+  .input-group {
+    @apply mb-4;
+  }
+
+  .input-group label {
+    @apply block mb-2 font-medium;
+  }
+
+  .input, .select, .textarea {
+    @apply w-full p-3 border border-gray-300 dark:border-gray-700 rounded bg-transparent transition-colors focus:outline-none focus:border-primary dark:focus:border-primary-light;
+  }
+
+  .textarea {
+    @apply min-h-[120px] resize-y;
+  }
+
+  .tabs {
+    @apply flex overflow-x-auto border-b border-gray-200 dark:border-gray-700 mb-4;
+  }
+
+  .tab {
+    @apply py-3 px-4 whitespace-nowrap cursor-pointer opacity-70 hover:opacity-100 transition-opacity relative;
+  }
+
+  .tab.active {
+    @apply text-primary dark:text-primary-light opacity-100;
+  }
+
+  .tab.active::after {
+    @apply content-[''] absolute bottom-[-1px] left-0 w-full h-0.5 bg-primary dark:bg-primary-light;
+  }
+
+  .json-result {
+    @apply bg-background-light dark:bg-background-dark p-4 rounded overflow-x-auto font-mono whitespace-pre-wrap break-words;
+  }
+}
+
+/* 动画 */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* 通知样式 */
+.notification-container {
+  @apply fixed top-4 right-4 z-50;
+}
+
+.notification {
+  @apply p-3 mb-2 rounded text-white shadow-md-light flex items-center justify-between min-w-[300px] max-w-[400px] animate-fadeIn;
+}
+
+.notification.info {
+  @apply bg-blue-500;
+}
+
+.notification.success {
+  @apply bg-green-500;
+}
+
+.notification.error {
+  @apply bg-error dark:bg-error-dark;
+}
+
+.notification-close {
+  @apply cursor-pointer ml-2;
+}
+
+@keyframes fadeIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.animate-fadeOut {
+  animation: fadeOut 0.3s;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .conversion-container {
+    @apply flex-col;
+  }
+}
