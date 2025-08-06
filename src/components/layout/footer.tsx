@@ -15,19 +15,19 @@ export const Footer: React.FC = () => {
           </div>
           <div className="flex space-x-6">
             <Link
-              href="/about"
+              href="https://github.com/weixuefeng/txtool/issues"
               className="text-primary dark:text-primary-light hover:underline"
             >
               关于我们
             </Link>
             <Link
-              href="/privacy"
+              href="https://github.com/weixuefeng/txtool/issues"
               className="text-primary dark:text-primary-light hover:underline"
             >
               隐私政策
             </Link>
             <Link
-              href="/contact"
+              href="https://github.com/weixuefeng/txtool/issues"
               className="text-primary dark:text-primary-light hover:underline"
             >
               联系我们
