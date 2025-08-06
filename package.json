@@ -21,7 +21,7 @@
     "axios": "^1.4.0",
     "bitcoinjs-lib": "^6.1.5",
     "ecpair": "^2.1.0",
-    "tiny-secp256k1": "^2.2.3",
+    "@bitcoinerlab/secp256k1": "^1.1.1",
     "buffer": "^6.0.3"
   },
   "devDependencies": {

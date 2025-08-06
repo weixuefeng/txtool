@@ -3,8 +3,7 @@ import { ethers } from "ethers";
 import { handleBigInt } from "@/lib/api-utils";
 import * as bitcoin from 'bitcoinjs-lib';
 import { Buffer } from 'buffer';
-import * as ecc from 'tiny-secp256k1';
-
+import ecc from '@bitcoinerlab/secp256k1'
 // 初始化椭圆曲线加密库
 bitcoin.initEccLib(ecc);
 
