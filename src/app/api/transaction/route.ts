@@ -4,8 +4,9 @@ import { handleBigInt } from "@/lib/api-utils";
 import * as bitcoin from 'bitcoinjs-lib';
 import { Buffer } from 'buffer';
 import ecc from '@bitcoinerlab/secp256k1'
-import { Transaction, VersionedTransaction } from '@solana/web3.js'
+import { AddressLookupTableAccount, Transaction, VersionedTransaction } from '@solana/web3.js'
 import bs58 from 'bs58';
+import { lookup } from "dns";
 // 初始化椭圆曲线加密库
 bitcoin.initEccLib(ecc);
 
@@ -510,10 +511,61 @@ async function parseSolanaTransaction(rawTransaction: string) {
   const cleanedTx = rawTransaction.trim().replace(/\s+/g, '');
   try {
     const tx = Transaction.from(bs58.decode(cleanedTx));
-    return tx;
+    return formatSolanaTransaction(tx);
   } catch(e) {
-  const tx = VersionedTransaction.deserialize(bs58.decode(cleanedTx));
-    return tx;
+    const tx = VersionedTransaction.deserialize(bs58.decode(cleanedTx));
+    return formatSolanaTransaction(tx);
+  }
+}
+
+function formatSolanaTransaction(tx: Transaction | VersionedTransaction): any {
+  if(tx instanceof VersionedTransaction) {
+    return {
+      type: 'VersionedTransaction',
+      signatures: tx.signatures.map(sig => ({
+        signature: bs58.encode(sig)
+      })),
+      message: {
+        header: {
+          numRequiredSignatures: tx.message.header.numRequiredSignatures,
+          numReadonlySignedAccounts: tx.message.header.numReadonlySignedAccounts,
+          numReadonlyUnsignedAccounts: tx.message.header.numReadonlyUnsignedAccounts,
+        },
+        staticAccountKeys: tx.message.staticAccountKeys.map(key => key.toBase58()),
+        recentBlockhash: tx.message.recentBlockhash.toString(),
+        compiledInstructions: tx.message.compiledInstructions.map(instr => ({
+          programId: instr.programIdIndex.toString(),
+          data: bs58.encode(instr.data),
+          keys: instr.accountKeyIndexes.map(key => key.toString()),
+        })),
+        addressLookupTableAccounts: tx.message.addressTableLookups.map(addressTable => {
+          return {
+            key: addressTable.accountKey.toBase58(),
+            readonlyIndexes: addressTable.readonlyIndexes.map(index => index.toString()),
+            writableIndexes: addressTable.writableIndexes.map(index => index.toString()),
+          };
+        }),
+      },
+    };
+  } else {
+    return {
+      type: 'Legacy',
+      signatures: tx.signatures.map(sig => ({
+        publicKey: sig.publicKey.toJSON(),
+        signature: sig.signature?.toJSON(),
+      })),
+      message: {
+        instructions: tx.instructions.map(instr => ({
+          programId: instr.programId.toString(),
+          data: instr.data.toString('hex'),
+          keys: instr.keys.map(key => ({
+            pubkey: key.pubkey.toString(),
+            isSigner: key.isSigner,
+            isWritable: key.isWritable,
+          })),
+        })),
+      },
+    };
   }
 }
 
