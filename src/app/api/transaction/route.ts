@@ -4,6 +4,8 @@ import { handleBigInt } from "@/lib/api-utils";
 import * as bitcoin from 'bitcoinjs-lib';
 import { Buffer } from 'buffer';
 import ecc from '@bitcoinerlab/secp256k1'
+import { Transaction, VersionedTransaction } from '@solana/web3.js'
+import bs58 from 'bs58';
 // 初始化椭圆曲线加密库
 bitcoin.initEccLib(ecc);
 
@@ -504,27 +506,15 @@ async function parseEthTransaction(rawTransaction: string) {
  * 解析 Solana 交易
  */
 async function parseSolanaTransaction(rawTransaction: string) {
-  // 这里应该使用 Solana 相关的库进行解析
-  // 由于依赖较多，这里仍然使用模拟数据
-  return {
-    signature:
-      "5UfEFyrcuqiJHwZMcj2nYDsxT7zcMdnBmQn6WmHnj6NJzf8hCJHNYgYFSBD1PeNFJjVQ1HLMwmMnkfVGHF6DWVH6",
-    blockTime: 1630420800,
-    slot: 123456789,
-    fee: 5000,
-    instructions: [
-      {
-        programId: "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
-        data: "3Bxs4h24hBtQy9rw",
-        accounts: [
-          "AyGCwnwxQMCqaU4ixReHt8h5W4dwmxU7eM3BEQBdWVca",
-          "HVRdMnEg4RFiE6tGgxwqxE6rYvPLeHiTAQhgshLiYUE8",
-          "11111111111111111111111111111111",
-        ],
-      },
-    ],
-    recentBlockhash: "GHtXQBsoZHVnNFa9YhEV2ZS1JGPnrQC5SULcdj3ENAzK",
-  };
+// 这里应该使用 Solana 相关的库进行解析
+  const cleanedTx = rawTransaction.trim().replace(/\s+/g, '');
+  try {
+    const tx = Transaction.from(bs58.decode(cleanedTx));
+    return tx;
+  } catch(e) {
+  const tx = VersionedTransaction.deserialize(bs58.decode(cleanedTx));
+    return tx;
+  }
 }
 
 /**
