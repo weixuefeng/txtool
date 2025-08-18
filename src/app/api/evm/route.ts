@@ -33,21 +33,27 @@ export async function POST(request: NextRequest) {
     let result;
     switch (action) {
       case "balance":
+        if (!provider) throw new Error("Provider is required for balance check");
         result = await getBalance(provider, address);
         break;
       case "token-balance":
+        if (!provider) throw new Error("Provider is required for token balance check");
         result = await getTokenBalance(provider, address, tokenAddress);
         break;
       case "chain-id":
+        if (!provider) throw new Error("Provider is required for chain ID check");
         result = await getChainId(provider);
         break;
       case "gas-price":
+        if (!provider) throw new Error("Provider is required for gas price check");
         result = await getGasPrice(provider);
         break;
       case "broadcast":
+        if (!provider) throw new Error("Provider is required for transaction broadcast");
         result = await broadcastTransaction(provider, rawTx);
         break;
       case "tx-info":
+        if (!provider) throw new Error("Provider is required for transaction info");
         result = await getTransactionInfo(provider, txHash);
         break;
       case "parse-calldata":

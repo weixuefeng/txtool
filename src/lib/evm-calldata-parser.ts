@@ -121,7 +121,18 @@ const DEFI_FUNCTION_SIGNATURES = {
 };
 
 // Combine all known function signatures
-const ALL_FUNCTION_SIGNATURES = {
+const ALL_FUNCTION_SIGNATURES: Record<string, {
+  name: string;
+  signature: string;
+  inputs: Array<{
+    name: string;
+    type: string;
+    components?: Array<{
+      name: string;
+      type: string;
+    }>;
+  }>;
+}> = {
   ...ERC20_FUNCTION_SIGNATURES,
   ...DEFI_FUNCTION_SIGNATURES
 };
@@ -181,9 +192,9 @@ export function parseCalldata(calldata: string): ParsedCalldata {
 
     // Determine category
     let category: "ERC20" | "DeFi" | "Unknown" = "Unknown";
-    if (ERC20_FUNCTION_SIGNATURES[functionSelector]) {
+    if ((ERC20_FUNCTION_SIGNATURES as any)[functionSelector]) {
       category = "ERC20";
-    } else if (DEFI_FUNCTION_SIGNATURES[functionSelector]) {
+    } else if ((DEFI_FUNCTION_SIGNATURES as any)[functionSelector]) {
       category = "DeFi";
     }
 
