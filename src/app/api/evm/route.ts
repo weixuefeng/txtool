@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { ethers } from "ethers";
 import { handleBigInt } from "@/lib/api-utils";
+import { parseCalldata, getFunctionDescription } from "@/lib/evm-calldata-parser";
 
 // ERC20 代币 ABI
 const ERC20_ABI = [
@@ -16,17 +17,18 @@ const ERC20_ABI = [
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { action, rpcUrl, address, tokenAddress, txHash, rawTx } = body;
+    const { action, rpcUrl, address, tokenAddress, txHash, rawTx, calldata } = body;
 
-    if (!rpcUrl) {
+    // calldata parsing doesn't require RPC URL
+    if (action !== "parse-calldata" && !rpcUrl) {
       return NextResponse.json(
         { error: "缺少 RPC URL 参数" },
         { status: 400 }
       );
     }
 
-    // 创建 provider
-    const provider = new ethers.JsonRpcProvider(rpcUrl);
+    // 创建 provider (除非是 calldata 解析)
+    const provider = action !== "parse-calldata" ? new ethers.JsonRpcProvider(rpcUrl) : null;
 
     let result;
     switch (action) {
@@ -47,6 +49,9 @@ export async function POST(request: NextRequest) {
         break;
       case "tx-info":
         result = await getTransactionInfo(provider, txHash);
+        break;
+      case "parse-calldata":
+        result = await parseCalldataAction(calldata);
         break;
       default:
         return NextResponse.json(
@@ -228,5 +233,23 @@ async function getTransactionInfo(
     input: tx.data,
     status: receipt?.status === 1 ? "成功" : "失败",
     gasUsed: receipt?.gasUsed.toString() || "0",
+  };
+}
+
+/**
+ * Parse calldata
+ */
+async function parseCalldataAction(calldata: string) {
+  if (!calldata) {
+    throw new Error("缺少 calldata 参数");
+  }
+
+  const parsedData = parseCalldata(calldata);
+  const description = getFunctionDescription(parsedData);
+  
+  return {
+    ...parsedData,
+    description,
+    timestamp: new Date().toISOString()
   };
 }

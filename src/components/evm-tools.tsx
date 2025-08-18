@@ -15,12 +15,14 @@ export const EvmTools: React.FC = () => {
   const [tokenAddress, setTokenAddress] = useState("");
   const [txHash, setTxHash] = useState("");
   const [rawTx, setRawTx] = useState("");
+  const [calldata, setCalldata] = useState("");
   const [result, setResult] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { showSuccess, showError } = useNotification();
 
   const handleAction = async () => {
-    if (!rpcUrl.trim()) {
+    // calldata 解析不需要 RPC URL
+    if (activeTab !== "parse-calldata" && !rpcUrl.trim()) {
       showError("请输入RPC URL");
       return;
     }
@@ -68,6 +70,34 @@ export const EvmTools: React.FC = () => {
           }
           requestData.txHash = txHash;
           break;
+
+        case "parse-calldata":
+          if (!calldata.trim()) {
+            throw new Error("请输入 calldata");
+          }
+          // calldata 解析不需要 RPC URL
+          const parseResponse = await fetch("/api/evm", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              action: "parse-calldata",
+              calldata: calldata,
+              rpcUrl: "dummy" // 不会被使用，但 API 需要这个字段
+            }),
+          });
+          
+          if (!parseResponse.ok) {
+            const errorData = await parseResponse.json();
+            throw new Error(errorData.error || "请求失败");
+          }
+          
+          const parseData = await parseResponse.json();
+          setResult(JSON.stringify(parseData, null, 2));
+          showSuccess("Calldata 解析成功");
+          setIsLoading(false);
+          return;
           
         case "raw-tx":
           if (!txHash.trim()) {
@@ -163,6 +193,7 @@ export const EvmTools: React.FC = () => {
             <TabsTrigger value="broadcast">广播交易</TabsTrigger>
             <TabsTrigger value="tx-info">交易信息</TabsTrigger>
             <TabsTrigger value="raw-tx">获取原始交易</TabsTrigger>
+            <TabsTrigger value="parse-calldata">Calldata解析</TabsTrigger>
           </TabsList>
 
             <div className="mt-4">
@@ -230,13 +261,32 @@ export const EvmTools: React.FC = () => {
                   onChange={(e) => setTxHash(e.target.value)}
                 />
               </TabsContent>
+
+              <TabsContent value="parse-calldata">
+                <Textarea
+                  label="Calldata"
+                  placeholder="输入 EVM calldata (例如: 0xa9059cbb000000000000000000000000...)"
+                  value={calldata}
+                  onChange={(e) => setCalldata(e.target.value)}
+                  className="min-h-[120px]"
+                />
+                <div className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                  <p>支持解析常见的 DeFi 操作:</p>
+                  <ul className="list-disc list-inside mt-1 space-y-1">
+                    <li>ERC20: transfer, approve, transferFrom</li>
+                    <li>Uniswap V2/V3: swap 相关函数</li>
+                    <li>1inch: 聚合交换函数</li>
+                    <li>通用: execute, multicall 等</li>
+                  </ul>
+                </div>
+              </TabsContent>
             </div>
 
             <div className="mt-4">
               <Button
                 onClick={handleAction}
                 isLoading={isLoading}
-                disabled={isLoading || !rpcUrl.trim()}
+                disabled={isLoading || (activeTab !== "parse-calldata" && !rpcUrl.trim())}
                 className="w-full"
               >
                 {getButtonText(activeTab)}
@@ -292,6 +342,8 @@ function getButtonText(tab: string): string {
       return "获取交易信息";
     case "raw-tx":
       return "获取原始交易数据";
+    case "parse-calldata":
+      return "解析 Calldata";
     default:
       return "执行";
   }
