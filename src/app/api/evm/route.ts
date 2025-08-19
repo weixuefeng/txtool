@@ -59,6 +59,10 @@ export async function POST(request: NextRequest) {
       case "parse-calldata":
         result = await parseCalldataAction(calldata);
         break;
+      case "estimate-gas":
+        if (!provider) throw new Error("Provider is required for gas estimation");
+        result = await estimateGas(provider, body);
+        break;
       default:
         return NextResponse.json(
           { error: "不支持的操作类型" },
@@ -258,4 +262,135 @@ async function parseCalldataAction(calldata: string) {
     description,
     timestamp: new Date().toISOString()
   };
+}
+
+/**
+ * 估算交易手续费
+ */
+async function estimateGas(provider: ethers.JsonRpcProvider, params: any) {
+  const { fromAddress, toAddress, value, data } = params;
+  
+  if (!fromAddress) {
+    throw new Error("缺少发送方地址");
+  }
+  
+  if (!toAddress) {
+    throw new Error("缺少接收方地址");
+  }
+
+  try {
+    // 构建交易对象
+    const txRequest: any = {
+      from: fromAddress,
+      to: toAddress,
+    };
+    
+    // 添加价值（如果提供）
+    if (value && value.trim()) {
+      try {
+        txRequest.value = ethers.parseEther(value);
+      } catch (error) {
+        throw new Error("无效的价值格式，请输入ETH数量");
+      }
+    }
+    
+    // 添加calldata（如果提供）
+    if (data && data.trim()) {
+      // 验证 hex 格式
+      const cleanData = data.startsWith('0x') ? data : `0x${data}`;
+      if (!/^0x[0-9a-fA-F]*$/.test(cleanData)) {
+        throw new Error("无效的calldata格式");
+      }
+      txRequest.data = cleanData;
+    }
+
+    // 获取当前 gas 价格和网络信息
+    const [gasEstimate, feeData, network] = await Promise.all([
+      provider.estimateGas(txRequest),
+      provider.getFeeData(),
+      provider.getNetwork()
+    ]);
+
+    const gasLimit = gasEstimate;
+    const gasPrice = feeData.gasPrice || ethers.parseUnits("20", "gwei");
+    const maxFeePerGas = feeData.maxFeePerGas;
+    const maxPriorityFeePerGas = feeData.maxPriorityFeePerGas;
+
+    // 计算交易费用
+    const legacyFee = gasLimit * gasPrice;
+    const legacyFeeEth = Number(ethers.formatEther(legacyFee));
+    const legacyFeeGwei = Number(ethers.formatUnits(gasPrice, "gwei"));
+
+    const result: any = {
+      gasEstimate: gasLimit.toString(),
+      gasPrice: gasPrice.toString(),
+      gasPriceGwei: legacyFeeGwei,
+      transactionFeeWei: legacyFee.toString(),
+      transactionFeeEth: legacyFeeEth,
+      formattedFee: `${legacyFeeEth.toFixed(6)} ETH`,
+      chainId: Number(network.chainId),
+      timestamp: new Date().toISOString(),
+    };
+
+    // EIP-1559 支持 (maxFeePerGas 存在表示支持)
+    if (maxFeePerGas && maxPriorityFeePerGas) {
+      const eip1559Fee = gasLimit * maxFeePerGas;
+      const eip1559FeeEth = Number(ethers.formatEther(eip1559Fee));
+      const maxFeeGwei = Number(ethers.formatUnits(maxFeePerGas, "gwei"));
+      const maxPriorityGwei = Number(ethers.formatUnits(maxPriorityFeePerGas, "gwei"));
+      
+      result.eip1559Support = true;
+      result.maxFeePerGas = maxFeePerGas.toString();
+      result.maxPriorityFeePerGas = maxPriorityFeePerGas.toString();
+      result.maxFeePerGasGwei = maxFeeGwei;
+      result.maxPriorityFeePerGasGwei = maxPriorityGwei;
+      result.eip1559TransactionFeeWei = eip1559Fee.toString();
+      result.eip1559TransactionFeeEth = eip1559FeeEth;
+      result.eip1559FormattedFee = `${eip1559FeeEth.toFixed(6)} ETH`;
+    } else {
+      result.eip1559Support = false;
+    }
+
+    // 不同 gas price 的估算
+    const gasMultipliers = [0.5, 0.75, 1, 1.25, 1.5, 2];
+    const gasEstimates = gasMultipliers.map(multiplier => {
+      const adjustedGasPrice = BigInt(Math.floor(Number(gasPrice) * multiplier));
+      const adjustedFee = gasLimit * adjustedGasPrice;
+      const adjustedFeeEth = Number(ethers.formatEther(adjustedFee));
+      const adjustedGasGwei = Number(ethers.formatUnits(adjustedGasPrice, "gwei"));
+      
+      let speed = "慢";
+      if (multiplier >= 2) speed = "极快";
+      else if (multiplier >= 1.25) speed = "快";
+      else if (multiplier >= 1) speed = "标准";
+      else if (multiplier >= 0.75) speed = "较慢";
+      
+      return {
+        speed,
+        multiplier,
+        gasPrice: adjustedGasPrice.toString(),
+        gasPriceGwei: adjustedGasGwei,
+        transactionFeeWei: adjustedFee.toString(),
+        transactionFeeEth: adjustedFeeEth,
+        formattedFee: `${adjustedFeeEth.toFixed(6)} ETH`
+      };
+    });
+    
+    result.gasEstimates = gasEstimates;
+    
+    return result;
+    
+  } catch (error) {
+    if (error instanceof Error) {
+      // 处理常见错误
+      if (error.message.includes("insufficient funds")) {
+        throw new Error("余额不足无法估算gas");
+      } else if (error.message.includes("execution reverted")) {
+        throw new Error("交易将会失败，无法估算gas");
+      } else if (error.message.includes("invalid address")) {
+        throw new Error("无效的地址格式");
+      }
+    }
+    throw error;
+  }
 }

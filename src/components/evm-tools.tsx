@@ -16,6 +16,10 @@ export const EvmTools: React.FC = () => {
   const [txHash, setTxHash] = useState("");
   const [rawTx, setRawTx] = useState("");
   const [calldata, setCalldata] = useState("");
+  const [fromAddress, setFromAddress] = useState("");
+  const [toAddress, setToAddress] = useState("");
+  const [ethValue, setEthValue] = useState("");
+  const [gasData, setGasData] = useState("");
   const [result, setResult] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { showSuccess, showError } = useNotification();
@@ -98,6 +102,20 @@ export const EvmTools: React.FC = () => {
           showSuccess("Calldata 解析成功");
           setIsLoading(false);
           return;
+
+        case "estimate-gas":
+          if (!fromAddress.trim()) {
+            throw new Error("请输入发送方地址");
+          }
+          if (!toAddress.trim()) {
+            throw new Error("请输入接收方地址");
+          }
+          requestData.action = "estimate-gas";
+          requestData.fromAddress = fromAddress;
+          requestData.toAddress = toAddress;
+          requestData.value = ethValue;
+          requestData.data = gasData;
+          break;
           
         case "raw-tx":
           if (!txHash.trim()) {
@@ -194,6 +212,7 @@ export const EvmTools: React.FC = () => {
             <TabsTrigger value="tx-info">交易信息</TabsTrigger>
             <TabsTrigger value="raw-tx">获取原始交易</TabsTrigger>
             <TabsTrigger value="parse-calldata">Calldata解析</TabsTrigger>
+            <TabsTrigger value="estimate-gas">手续费估算</TabsTrigger>
           </TabsList>
 
             <div className="mt-4">
@@ -280,6 +299,46 @@ export const EvmTools: React.FC = () => {
                   </ul>
                 </div>
               </TabsContent>
+
+              <TabsContent value="estimate-gas">
+                <Input
+                  label="发送方地址"
+                  placeholder="输入发送方钱包地址"
+                  value={fromAddress}
+                  onChange={(e) => setFromAddress(e.target.value)}
+                  className="mb-4"
+                />
+                <Input
+                  label="接收方地址"
+                  placeholder="输入接收方地址或合约地址"
+                  value={toAddress}
+                  onChange={(e) => setToAddress(e.target.value)}
+                  className="mb-4"
+                />
+                <Input
+                  label="交易金额 (ETH)"
+                  placeholder="输入要发送的 ETH 数量（可选）"
+                  value={ethValue}
+                  onChange={(e) => setEthValue(e.target.value)}
+                  className="mb-4"
+                />
+                <Textarea
+                  label="Calldata (可选)"
+                  placeholder="输入交易的 calldata（可选，用于合约调用）"
+                  value={gasData}
+                  onChange={(e) => setGasData(e.target.value)}
+                  className="min-h-[100px]"
+                />
+                <div className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                  <p>估算交易所需的 Gas 和手续费:</p>
+                  <ul className="list-disc list-inside mt-1 space-y-1">
+                    <li>普通转账: 只需要发送方和接收方地址</li>
+                    <li>合约调用: 需要提供 calldata 数据</li>
+                    <li>支持 EIP-1559 和传统 Gas 价格模式</li>
+                    <li>提供不同速度的手续费选项</li>
+                  </ul>
+                </div>
+              </TabsContent>
             </div>
 
             <div className="mt-4">
@@ -344,6 +403,8 @@ function getButtonText(tab: string): string {
       return "获取原始交易数据";
     case "parse-calldata":
       return "解析 Calldata";
+    case "estimate-gas":
+      return "估算手续费";
     default:
       return "执行";
   }
