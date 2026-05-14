@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { ethers } from "ethers";
+import { decodeBase64, ethers } from "ethers";
 import { handleBigInt } from "@/lib/api-utils";
 import * as bitcoin from 'bitcoinjs-lib';
 import { Buffer } from 'buffer';
@@ -493,6 +493,9 @@ async function parseEthTransaction(rawTransaction: string) {
       gasLimit: tx.gasLimit.toString(),
       data: tx.data,
       chainId: tx.chainId,
+      maxFeePerGas: tx.maxFeePerGas?.toString() || "0",
+      maxPriorityFeePerGas: tx.maxPriorityFeePerGas?.toString() || "0",
+      blobGasFee: tx.maxFeePerBlobGas?.toString() || "0",
       r: tx.signature?.r,
       s: tx.signature?.s,
       v: tx.signature?.v,
@@ -510,10 +513,11 @@ async function parseSolanaTransaction(rawTransaction: string) {
 // 这里应该使用 Solana 相关的库进行解析
   const cleanedTx = rawTransaction.trim().replace(/\s+/g, '');
   try {
-    const tx = Transaction.from(bs58.decode(cleanedTx));
+    const tx = Transaction.from(decodeBase64(cleanedTx));
+    console.log('成功解析为传统交易');
     return formatSolanaTransaction(tx);
   } catch(e) {
-    const tx = VersionedTransaction.deserialize(bs58.decode(cleanedTx));
+    const tx = VersionedTransaction.deserialize(decodeBase64(cleanedTx));
     return formatSolanaTransaction(tx);
   }
 }
