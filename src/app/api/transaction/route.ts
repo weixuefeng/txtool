@@ -5,6 +5,7 @@ import * as bitcoin from 'bitcoinjs-lib';
 import { Buffer } from 'buffer';
 import ecc from '@bitcoinerlab/secp256k1'
 import { AddressLookupTableAccount, Transaction, VersionedTransaction } from '@solana/web3.js'
+import {TronWeb} from 'tronweb'
 import bs58 from 'bs58';
 import { lookup } from "dns";
 // 初始化椭圆曲线加密库
@@ -71,6 +72,10 @@ export async function POST(request: NextRequest) {
       case "cosmos":
         result = await parseCosmosTransaction(rawTransaction);
         break;
+      case "tron":
+        // 这里应该调用解析 Tron 交易的函数
+        result = await parseTronTransaction(rawTransaction);
+        break;
       default:
         return NextResponse.json(
           { error: "不支持的区块链类型" },
@@ -86,6 +91,26 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     );
   }
+}
+
+/**
+ * 解析 Tron 交易
+ */
+
+async function parseTronTransaction(rawTxStr: string) {
+  // 这里应该使用 Tron 相关的库进行解析
+  var rawTransaction = clear0x(rawTxStr);
+  var tronWeb = new TronWeb({fullNode: 'https://api.trongrid.io', solidityNode: 'https://api.trongrid.io', eventServer: 'https://api.trongrid.io'});
+  var dex = tronWeb.utils.deserializeTx;
+  var tx = dex.deserializeTransaction("TriggerSmartContract", rawTransaction);
+  return tx;
+}
+
+function clear0x(str: string) {
+  if (str.startsWith("0x") || str.startsWith("0X")) {
+    return str.slice(2);
+  }
+  return str;
 }
 
 /**

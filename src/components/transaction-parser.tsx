@@ -12,6 +12,7 @@ const blockchainOptions = [
   { value: "eth", label: "Ethereum (ETH)" },
   { value: "solana", label: "Solana (SOL)" },
   { value: "cosmos", label: "Cosmos (ATOM)" },
+  { value: "tron", label: "Tron (TRX)" },
 ];
 
 export const TransactionParser: React.FC = () => {
@@ -62,7 +63,7 @@ export const TransactionParser: React.FC = () => {
 
   const handleCopy = async () => {
     if (!result) return;
-    
+
     const success = await copyToClipboard(result);
     if (success) {
       showSuccess("已复制到剪贴板");
@@ -81,7 +82,7 @@ export const TransactionParser: React.FC = () => {
             value={blockchain}
             onChange={(e) => setBlockchain(e.target.value)}
           />
-          
+
           <Textarea
             label="原始交易数据"
             placeholder="请输入原始交易数据..."
@@ -89,7 +90,7 @@ export const TransactionParser: React.FC = () => {
             onChange={(e) => setRawTransaction(e.target.value)}
             className="min-h-[150px]"
           />
-          
+
           <div className="mt-4">
             <Button
               onClick={handleParse}
