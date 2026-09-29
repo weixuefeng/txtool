@@ -688,7 +688,8 @@ async function getTransactionByHash(rpcUrl: string, txHash: string) {
         blockNumber: tx.blockNumber,
         blockHash: tx.blockHash,
       },
-      rawTransaction: rawTx,
+      receipt: receipt?.toJSON(),
+      raw: rawTx
     };
   } catch (error) {
     console.error("获取交易原始数据失败:", error);
